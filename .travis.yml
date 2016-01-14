@@ -1,0 +1,18 @@
+
+language: ruby
+sudo: false
+addons:
+  apt:
+    packages:
+    - bc
+cache:
+  directories:
+    - $HOME/.buildroot-ccache
+script:
+- wget http://buildroot.uclibc.org/downloads/buildroot-2015.11.tar.gz
+- tar xzf buildroot-2015.11.tar.gz
+- cp -f microzed_defconfig buildroot-2015.11/configs/
+- cd buildroot-2015.11
+- make microzed_defconfig
+- make > >(tee build.log |grep '>>>') 2>&1
+- tail -1000 build.log
